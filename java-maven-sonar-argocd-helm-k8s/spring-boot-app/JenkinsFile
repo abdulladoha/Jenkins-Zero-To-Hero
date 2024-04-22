@@ -5,6 +5,23 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
+ stages {
+        stage('Remove Workspace if Folder Exists') {
+            steps {
+                script {
+                    def folderPath = "/var/lib/jenkins/workspace/ultimate-demo"
+                    if (fileExists(folderPath)) {
+                        echo "Folder exists. Removing workspace..."
+                        deleteDir()
+                    } else {
+                        echo "Folder does not exist. Proceeding with the pipeline..."
+                    }
+                }
+            }
+        }
+        // Add more stages for your pipeline here...
+    }
+}
   stages {
     stage('Checkout') {
       steps {
